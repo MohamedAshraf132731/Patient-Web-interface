@@ -60,10 +60,10 @@ jobs:
       - name: Install Minikube on EC2 and Deploy App
         run: |
           # 1. Copy app.yaml to EC2
-          scp -o StrictHostKeyChecking=no -i key.pem k8s/app.yaml ubuntu@3.92.6.74:/home/ubuntu/app.yaml
+          scp -o StrictHostKeyChecking=no -i key.pem k8s/app.yaml ubuntu@44.193.3.101:/home/ubuntu/app.yaml
 
           # 2. SSH into EC2 and run full setup + deploy
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@3.92.6.74 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@44.193.3.101 << 'EOF'
             set -eux
 
             # Update and install required packages
@@ -127,6 +127,6 @@ jobs:
             sudo -E kubectl apply -f /home/ubuntu/app.yaml
 
             # Port forward (detached)
-            sudo docker run -d --name action -p 9500:8000 mohamedashraf3/mohamedashraf:${{ github.run_number }}
+            sudo docker run -d --name action -p 8000:8000 mohamedashraf3/mohamedashraf:${{ github.run_number }}
             sudo -E nohup kubectl port-forward service/service-web 8080:6000 > forward.log 2>&1 &
           EOF
