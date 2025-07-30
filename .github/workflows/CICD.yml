@@ -44,12 +44,11 @@ jobs:
     with:
         context: ./project
         push: true
-        tags: mohamedashraf3/mohamedashraf:test 
-        #({{ github.run_number }}
+        tags: mohamedashraf3/mohamedashraf:${{ github.run_number }}
  CD:
     runs-on: ubuntu-latest
-   # needs:
-    #  - CI-1tier-app
+    needs:
+      - CI-1tier-app
     steps:
       - name: clone repo
         uses: actions/checkout@v4
@@ -128,6 +127,6 @@ jobs:
             sudo -E kubectl apply -f /home/ubuntu/app.yaml
 
             # Port forward (detached)
-            sudo docker run -d --name action -p 6000:8000 mohamedashraf3/mohamedashraf:test
+            sudo docker run -d --name action -p 9500:8000 mohamedashraf3/mohamedashraf:${{ github.run_number }}
             sudo -E nohup kubectl port-forward service/service-web 8080:6000 > forward.log 2>&1 &
           EOF
